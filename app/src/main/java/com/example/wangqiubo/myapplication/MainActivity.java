@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -14,6 +15,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,12 +35,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("crashLog", "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        myHandler = new MyHandler(Looper.getMainLooper());
+        myHandler = new MyHandler();
 
        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -53,15 +56,28 @@ public class MainActivity extends AppCompatActivity {
         mCustomBaseAdapter = new CustomBaseAdapter(this);
         mListView.setAdapter(mCustomBaseAdapter);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent();
-                ComponentName componentName = new ComponentName("com.example.myservice","com.example.myservice.BookManagerService");
-                intent.setComponent(componentName);
-                bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-            }
-        }).start();;
+        Intent intent = new Intent();
+        ComponentName componentName = new ComponentName("com.example.myservice","com.example.myservice.BookManagerService");
+        intent.setComponent(componentName);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Intent intent = new Intent();
+//                ComponentName componentName = new ComponentName("com.example.myservice","com.example.myservice.BookManagerService");
+//                intent.setComponent(componentName);
+//                bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+//            }
+//        }).start();;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Debug.waitForDebugger();
+        int a =0;
+        int b = 0;
     }
 
     private class MyHandler extends Handler{
@@ -90,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
                             mBookList = mBooksAidl.getBookList();
                             if (null != mBookList){
                                 mCustomBaseAdapter.setBookDatas(mBookList);
+                                mCustomBaseAdapter.notifyDataSetChanged();
                                 mListView.postInvalidate();
                             }
                         } catch (RemoteException e) {

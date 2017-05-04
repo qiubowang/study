@@ -25,7 +25,7 @@ public class CustomBaseAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 0;
+        return mBookDatas.size();
     }
 
     @Override
