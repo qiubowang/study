@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.Debug;
 import android.os.Handler;
@@ -22,6 +23,8 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.example.wangqiubo.myaidl.Book;
+//import com.example.wangqiubo.myaidl.IBookCallBackInterface;
+import com.example.wangqiubo.myaidl.IBookCallBackInterface;
 import com.example.wangqiubo.myaidl.IBooksAidlInterface;
 
 import java.util.List;
@@ -29,6 +32,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private IBooksAidlInterface mBooksAidl;
     private List<Book> mBookList;
+    private Book mNewBook;
     private MyHandler myHandler = null;
     private ListView mListView = null;
     private CustomBaseAdapter mCustomBaseAdapter;
@@ -75,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Debug.waitForDebugger();
+       // Debug.waitForDebugger();
         int a =0;
         int b = 0;
     }
@@ -99,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void handleMessage(Message msg) {
+            //Debug.waitForDebugger();
             switch (msg.what){
                 case 1:
                     if (null != mBooksAidl){
@@ -107,14 +112,18 @@ public class MainActivity extends AppCompatActivity {
                             if (null != mBookList){
                                 mCustomBaseAdapter.setBookDatas(mBookList);
                                 mCustomBaseAdapter.notifyDataSetChanged();
-                                mListView.postInvalidate();
                             }
+                            mBooksAidl.registerBookEvent(callBackInterface);
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
                     }
                     break;
                 case 2:
+                    break;
+                case 22:
+                    mCustomBaseAdapter.addBookData(mNewBook);
+                    mCustomBaseAdapter.notifyDataSetChanged();
                     break;
                 default:
                     break;
@@ -163,7 +172,28 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        try {
+            mBooksAidl.unregisterBookEvent(callBackInterface);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
         unbindService(serviceConnection);
         super.onDestroy();
     }
+
+    private IBookCallBackInterface callBackInterface = new IBookCallBackInterface.Stub(){
+        @Override
+        public void newBookNotification(Book book) throws RemoteException {
+            Log.d("book", "收到了BookCallBack信息");
+           // Debug.waitForDebugger();
+            if(null != book){
+                mNewBook = book;
+                Message message = myHandler.obtainMessage();
+                message.what = 22;
+                myHandler.sendMessage(message);
+            }
+        }
+    };
 }
+
+

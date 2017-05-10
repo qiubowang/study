@@ -21,6 +21,9 @@
             android:name=".BookManagerService"
             android:enabled="true"
             android:exported="true"></service>
+        <service android:name=".MessengerService"
+            android:exported="true"
+            android:enabled="true"></service>
     </application>
 
 </manifest>
