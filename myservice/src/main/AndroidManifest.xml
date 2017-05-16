@@ -24,6 +24,13 @@
         <service android:name=".MessengerService"
             android:exported="true"
             android:enabled="true"></service>
+        <provider
+            android:authorities="com.example.myservice.MyContentProvider"
+            android:name=".MyContentProvider"
+            android:enabled="true"
+            android:exported="true">
+
+        </provider>
     </application>
 
 </manifest>

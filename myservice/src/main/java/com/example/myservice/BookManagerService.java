@@ -47,6 +47,7 @@ public class BookManagerService extends Service {
             return mBookList;
         }
 
+
         @Override
         public void addBook(com.example.wangqiubo.myaidl.Book book) throws RemoteException {
             mBookList.add(book);

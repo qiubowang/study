@@ -48,15 +48,15 @@ public class Book implements Parcelable {
 
     }
 
-    public String   getmBookName(){
+    public String getBookName(){
         return this.mBookName;
     }
 
-    public String   getmBookCatagery(){
+    public String getBookCatagery(){
         return this.mBookCatagery;
     }
 
-    public String getmBookISO(){
+    public String getBookISO(){
         return this.mBookISO;
     }
 }

@@ -47,4 +47,16 @@ public class Book implements Parcelable {
         dest.writeString(mBookISO);
 
     }
+
+    public String getBookName(){
+        return this.mBookName;
+    }
+
+    public String getBookCatagery(){
+        return this.mBookCatagery;
+    }
+
+    public String getBookISO(){
+        return this.mBookISO;
+    }
 }

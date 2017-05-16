@@ -52,9 +52,9 @@ public class CustomBaseAdapter extends BaseAdapter {
             viewHolder = (ViewHolder)convertView.getTag();
         }
 
-        viewHolder.bookName.setText(mBookDatas.get(position).getmBookName());
-        viewHolder.bookIso.setText(mBookDatas.get(position).getmBookISO());
-        viewHolder.bookCat.setText(mBookDatas.get(position).getmBookCatagery());
+        viewHolder.bookName.setText(mBookDatas.get(position).getBookName());
+        viewHolder.bookIso.setText(mBookDatas.get(position).getBookISO());
+        viewHolder.bookCat.setText(mBookDatas.get(position).getBookCatagery());
 
         return convertView;
     }
