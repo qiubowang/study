@@ -1,6 +1,10 @@
-package com.example.wangqiubo.myaidl;
+package com.example.myservice;
 
 import android.os.RemoteException;
+
+import com.example.wangqiubo.myaidl.Book;
+import com.example.wangqiubo.myaidl.IBookCallBackInterface;
+import com.example.wangqiubo.myaidl.IBooksAidlInterface;
 
 import java.util.List;
 

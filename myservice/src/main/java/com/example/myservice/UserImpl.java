@@ -1,8 +1,9 @@
-package com.example.wangqiubo.myaidl;
+package com.example.myservice;
 
 import android.os.RemoteException;
 
 import com.example.wangqiubo.myaidl.IUserAidlInterface;
+import com.example.wangqiubo.myaidl.User;
 
 import java.util.ArrayList;
 import java.util.List;

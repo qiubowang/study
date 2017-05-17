@@ -1,9 +1,9 @@
-package com.example.wangqiubo.myaidl;
+package com.example.myservice;
 
 import android.os.IBinder;
 import android.os.RemoteException;
 
-import com.example.wangqiubo.myapplication.BookImpl;
+import com.example.wangqiubo.myaidl.IAidlPoolInterface;
 
 /**
  * Created by wangqiubo on 2017/5/17.
