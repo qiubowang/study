@@ -33,7 +33,7 @@ public class AidlPoolActivity extends Activity implements View.OnClickListener{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.aidl_pool);
         mHandler = new MyHandler();
         mListView = (ListView) findViewById(R.id.my_list_view);
         customBaseAdapter = new CustomBaseAdapter(this);

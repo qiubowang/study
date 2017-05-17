@@ -6,6 +6,7 @@ import com.example.wangqiubo.myaidl.Book;
 import com.example.wangqiubo.myaidl.IBookCallBackInterface;
 import com.example.wangqiubo.myaidl.IBooksAidlInterface;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,14 +14,15 @@ import java.util.List;
  */
 
 public class BookImpl extends IBooksAidlInterface.Stub {
+    List<Book> books = new ArrayList<>();
     @Override
     public List<Book> getBookList() throws RemoteException {
-        return null;
+        return books;
     }
 
     @Override
     public void addBook(Book book) throws RemoteException {
-
+        books.add(book);
     }
 
     @Override
