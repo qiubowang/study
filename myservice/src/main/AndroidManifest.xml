@@ -24,6 +24,10 @@
         <service android:name=".MessengerService"
             android:exported="true"
             android:enabled="true"></service>
+        <service
+            android:name=".AidlPoolService"
+            android:enabled="true"
+            android:exported="true"></service>
         <provider
             android:authorities="com.example.myservice.MyContentProvider"
             android:name=".MyContentProvider"

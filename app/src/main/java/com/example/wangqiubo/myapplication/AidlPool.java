@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Binder;
+import android.os.Debug;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.util.Log;
 
 import com.example.wangqiubo.myaidl.IAidlPoolInterface;
 
@@ -36,6 +38,9 @@ public class AidlPool {
 //
 //                break;
 //        }
+        Log.d("aidlPool：", " queryBinder");
+        if (null == aidlPoolInterface)
+            return null;
         mBinder = aidlPoolInterface.queryBinder(binderId);
         return mBinder;
     }
@@ -48,7 +53,10 @@ public class AidlPool {
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.d("aidlPool", " ServiceConnection");
             aidlPoolInterface = IAidlPoolInterface.Stub.asInterface(service);
+            if (null != aidlPoolInterface)
+                Log.d("aidlPool:", "aidlPoolInterface is not null");
         }
 
         @Override
