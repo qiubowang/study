@@ -38,4 +38,18 @@ rem @set 显示当前以及定义的变量，环境变量中的所有值，及其上面定义的变量
 @set s
 rem 输出所有s开头的变量
 
+rem 加载java的JAR包，并执行main函数(可以作为入库函数)
+set tag_libs=qiubowang\libs
+set tag_class=%tag_libs%\11.jar;%tag_libs%\22.jar;
+rem tag_libs为jar所在的目录，tag_class即是包路径
+java -classpath %tag_class% cn.wps.wow.common.utils.JarUtil deploy\mini\tag.js 
+rem 加载tag_class指定的jar包到虚拟机，执行cn.wps.wow.common.utils.JarUtil中的main函数，后面是参数，传给main函数的args[]
+
+java -cp %tag_class% cn.wps.wow.common.utils.JarUtil deploy\mini\tag.js 
+rem 同理classpath,cp加载jar包
+
+call aa.bat
+rem 调用另外一个bat脚本
+call bash aa.sh
+rem 调用shell命令文件 aa.sh
 
