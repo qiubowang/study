@@ -10,7 +10,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.example.wangqiubo.myaidl.IAidlPoolInterface;
+import com.example.wangqiubo.myaidl.IAidlPool;
 
 /**
  * Created by wangqiubo on 2017/5/17.
@@ -19,12 +19,12 @@ import com.example.wangqiubo.myaidl.IAidlPoolInterface;
 public class AidlPool {
     public static final int BOOK_BINDER_ID = 0;
     public static final int USER_BINDER_ID = 1;
-    private IAidlPoolInterface aidlPoolInterface = null;
+    private IAidlPool aidlPoolInterface = null;
     private IBinder mBinder = null;
 
     public AidlPool(Context context){
         Intent intent = new Intent();
-        ComponentName componentName = new ComponentName("com.example.myservice","com.example.myservice.BookManagerService");
+        ComponentName componentName = new ComponentName("com.example.myservice","com.example.myservice.AidlPoolService");
         intent.setComponent(componentName);
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
@@ -38,6 +38,7 @@ public class AidlPool {
 //
 //                break;
 //        }
+        //Debug.waitForDebugger();
         Log.d("aidlPool：", " queryBinder");
         if (null == aidlPoolInterface)
             return null;
@@ -45,7 +46,7 @@ public class AidlPool {
         return mBinder;
     }
 
-    public IAidlPoolInterface getAidlPoolInterface(){
+    public IAidlPool getAidlPoolInterface(){
         return aidlPoolInterface;
     }
 
@@ -54,7 +55,7 @@ public class AidlPool {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Log.d("aidlPool", " ServiceConnection");
-            aidlPoolInterface = IAidlPoolInterface.Stub.asInterface(service);
+            aidlPoolInterface = IAidlPool.Stub.asInterface(service);
             if (null != aidlPoolInterface)
                 Log.d("aidlPool:", "aidlPoolInterface is not null");
         }
