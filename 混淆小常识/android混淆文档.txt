@@ -1,0 +1,115 @@
+	JAVA文件的混淆文件默认为proguard.cfg，当然可以自定义另外的混淆文件，本文定位customProguard.cfg。
+	混淆会经历4个过程，压缩(Shrinking) -> 优化(Optimization) -> 混淆(Obfuscation) -> 预检(Preveirfy)。
+	1、混淆的基本指令，以下混淆代码是基本所有混淆文件必须的，因此可以照搬复制过去。
+	-optimizations !code/simplification/arithmetic,!field/*,class/merging/* 谷歌推荐的混淆算法，一般不改变。
+	-optimizationonpasses 5 ,代码混淆的压缩比，默认值为5，可以根据需求选择0~7的压缩比例，一般可以不用修改。
+	-dontusemixedcaseclassnames, 混淆类不采用大小混写，统一为小写。
+	-dontskipnonpubliclibraryclassmembers, 指定不去忽略非公共库的类成员。
+	-dontskipnonpublicclassnames, 指定不去忽略非公的类。
+	-dontpreverify, 不去预检，可以提高混淆速度。
+	-verbose
+	-printmapping customProguardMapping.txt, verbose指定混淆后生成映射的文件，printmapping指定映射后的输出的文件名。
+	-keepattributes *Annotation* ,保护代码中的注解不被混淆，在JSON实体映射的时候非常重要，比如fastJson。
+	-keepattributes Signature ,避免混淆泛型，在JSON实体映射非常重要，例如fastJson。
+	-keepattributes SouceFile,LineNumberTable ,抛出异常的时候保留代码行号。
+	-keepattributes InnerClasses , 保留所有的内部类
+	
+	多行写法。
+	-keepattributes Exceptions,InnerClasses,Signature,Deprecated,*Annotation*,EnclosingMethod,*AtomMember,*Key,*Expose,*SerializedName;
+	
+	2、以下是混淆文件其他写法
+	保留本地所有的native方法不被混淆
+	-keepclasseswithmembernames class *{
+		native <methods>;
+	}
+	
+	保留继承了Android相关的SDK的子类，其不被混淆。
+	-keep public class * extends android.app.Activity
+	-keep public class * extends android.app.Fragment
+	-keep public class * extends android.app.Application
+	-keep public class * extends android.app.Service
+	-keep public class * extends android.content.BroadcastReceiver
+	-keep public class * extends android.content.ContentProvider
+	-keep public class * extends android.app.backup.BackupAgentHelper
+	-keep public class * extends android.preference.Preference
+	-keep public class com.android.vending.licensing.ILicensingService
+	.......
+	.......
+	
+	3、保留某个类中的某些方法，结构如下。
+	-keepclassmembers class * extends android.app.Activity{
+		public void *(android.view.View);  保留继承了Activity所有类的参数中带有View的方法
+	}
+	
+	4、如果引用了android-support-v4.jar，避免混淆增加以下,即是保留某个包下的所有类。
+	-keep public class com.tuniu,app.ui.fragment.**{*;};
+	
+	5、保留枚举。
+	-keepclassmembers emum * {
+		public static **{} values();
+		public static ** valuesof(java.lang.String);
+	}
+	
+	6、保留自定义控件不被混淆(如果自定义了放在资源文件Layout中的xml文件不能混淆)。
+	-keep public class * extends android.view.View{
+		*** get*();
+		void set*(***);
+		public <init>(android.content.Context);
+		public <init>(android.content, android.util.AttributeSet)
+		public <init>(android.content, android.util.AttributeSet, int)
+	}
+	<init>代表这构造函数。
+	
+	7、保留Parcelable文件。
+	-keep class * implements android.os.Parcelable{
+		public static final android.os.Parcelable$Creator *;
+	}
+	
+	8、保留Serializable序列化类。
+	-keepclassmembers class * implements java.Serializable{
+		static final long serialVersionUID;
+		private static final java.io.ObjectStreamField[] serialPersistentFilds;
+		private void writeObject(java.io.ObjectOutStream);
+		private void readObject(java.io.ObjectOutStream);
+		java.lang.Object writeReplace();
+		java.lang.Object readResolve();
+	}
+	
+	9、保留对于资源(R)下的所有类和方法。
+	-keep class **.R$*{
+		*;
+	}
+	
+	10、保留对于带有回调函数onXXEvent的方法,其他保留同理。
+	-keeclassmembers class * {
+		void *(**On*Event);
+	}
+	
+	
+	11.保留引用外部包。(第三方包一般已经混淆过)
+	-libraryjars ../libs/fastJson.jar
+	
+	12.保留某个类中的内部类(如果基础混淆代码中已经保留了所有内部类，这里可以不用理会)
+	-keep class com.example.bobo.MainActivity$*{*;}
+	
+	13.保留某个类的所有成员
+	-keep public class com.example.bobo.MainActivity{*;}
+	
+	或者
+	
+	-keep public class com.example.bobo.MainActivity{
+		<init>;
+		<fileds>;
+		<methods>;
+	}
+	
+	说明下，<init>为构造函数匹配符，<fileds> 为所有成员匹配符，<methods> 为所有方法匹配符
+	
+	14.保留部分包路径下的所有类等
+	-keep class class com.example.bobo.**{*;}
+	
+	15.需要混淆的包和混淆完毕导出的包
+	-injars ruyicai.jar //需要混淆的jar包    
+	-outjars ruyicai-out.jar //混淆完毕输出的jar包 
+
+	
