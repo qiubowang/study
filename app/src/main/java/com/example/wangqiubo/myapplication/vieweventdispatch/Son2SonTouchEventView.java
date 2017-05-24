@@ -12,51 +12,47 @@ import android.widget.LinearLayout;
  * Created by wangqiubo on 2017/5/19.
  */
 
-public class FatherTouchEventView extends LinearLayout implements View.OnClickListener{
-    public FatherTouchEventView(Context context) {
+public class Son2SonTouchEventView extends LinearLayout implements View.OnClickListener {
+    public Son2SonTouchEventView(Context context) {
         super(context);
     }
 
-    public FatherTouchEventView(Context context, @Nullable AttributeSet attrs) {
+    public Son2SonTouchEventView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public FatherTouchEventView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public Son2SonTouchEventView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event){
-        Log.d("ViewMotinEvent: ", "father_dispatch_" + MotinEventUtil.getTouchEventName(event));
-//        return false;
+        Log.d("ViewMotinEvent: ", "son2son_dispatch_" + MotinEventUtil.getTouchEventName(event));
 //        return true;
         return super.dispatchTouchEvent(event);
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event){
-        Log.d("ViewMotinEvent: ", "father_intercept_" + MotinEventUtil.getTouchEventName(event));
-//        return true;
-//        return false;
+        Log.d("ViewMotinEvent: ", "son2son_intercept_" + MotinEventUtil.getTouchEventName(event));
         return super.onInterceptTouchEvent(event);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event){
-        Log.d("ViewMotinEvent: ", "father_touch_" + MotinEventUtil.getTouchEventName(event));
-//        return false;
+        Log.d("ViewMotinEvent: ", "son2son_touch_" + MotinEventUtil.getTouchEventName(event));
         return super.onTouchEvent(event);
     }
 
     @Override
     public boolean performClick() {
-        Log.d("ViewMotinEvent: ", "father_performClick");
+        Log.d("ViewMotinEvent: ", "son2son_performClick_");
+//        return  true;
         return super.performClick();
-//        return true;//super.performClick();
     }
 
     @Override
     public void onClick(View v) {
-        Log.d("ViewMotinEvent: ", "Father_onClick");
+        Log.d("ViewMotinEvent: ", "Son2Son_onClick");
     }
 }

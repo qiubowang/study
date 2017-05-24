@@ -7,10 +7,21 @@
     android:background="#ff0000">
     <com.example.wangqiubo.myapplication.vieweventdispatch.SonTouchEventView
         android:id="@+id/son_touchevent"
-        android:layout_width="500px"
-        android:layout_height="600px"
+        android:layout_width="600px"
+        android:layout_height="1000px"
         android:orientation="horizontal"
+        android:gravity="center"
         android:background="#00ff00">
-
+        <com.example.wangqiubo.myapplication.vieweventdispatch.Son2SonTouchEventView
+            android:layout_width="400px"
+            android:layout_height="800px"
+            android:gravity="center"
+            android:background="#0000ff">
+            <!--<com.example.wangqiubo.myapplication.vieweventdispatch.TouchButton-->
+            <!--android:id="@+id/touch_button"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="测试touch事件分发顺序"/>-->
+    </com.example.wangqiubo.myapplication.vieweventdispatch.Son2SonTouchEventView>
     </com.example.wangqiubo.myapplication.vieweventdispatch.SonTouchEventView>
 </com.example.wangqiubo.myapplication.vieweventdispatch.FatherTouchEventView>
