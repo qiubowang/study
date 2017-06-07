@@ -23,8 +23,8 @@ public class ViewEventActivity extends Activity implements View.OnClickListener{
         fatherTouchEventView = (FatherTouchEventView)findViewById(R.id.father_event);
         sonTouchEventView = (SonTouchEventView)findViewById(R.id.son_touchevent);
 
-        fatherTouchEventView.setOnClickListener(this);
-        sonTouchEventView.setOnClickListener(this);
+//        fatherTouchEventView.setOnClickListener(this);
+//        sonTouchEventView.setOnClickListener(this);
 
     }
 

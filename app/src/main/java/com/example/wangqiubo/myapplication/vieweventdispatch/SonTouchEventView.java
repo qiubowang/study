@@ -35,8 +35,8 @@ public class SonTouchEventView extends LinearLayout implements View.OnClickListe
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event){
         Log.d("ViewMotinEvent: ", "son_intercept_" + MotinEventUtil.getTouchEventName(event));
-        return true;
-//        return super.onInterceptTouchEvent(event);
+//        return true;
+        return super.onInterceptTouchEvent(event);
     }
 
     @Override
