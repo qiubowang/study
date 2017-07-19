@@ -19,6 +19,7 @@ import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -69,8 +70,8 @@ public class PictureSampleUtil {
 
     public static void LruCacheUtil(){
         long maxMemorySize = Runtime.getRuntime().maxMemory()/1024;
-        long catchTotalSize = (int)(maxMemorySize/8);
-        mLruCache = new LruCache<String, Bitmap>(100){
+        int catchTotalSize = (int)(maxMemorySize/8);
+        mLruCache = new LruCache<String, Bitmap>(catchTotalSize){
 
             @Override
             protected void entryRemoved(boolean evicted, String key, Bitmap oldValue, Bitmap newValue) {
@@ -89,11 +90,12 @@ public class PictureSampleUtil {
 
         public static File getDiskLruCacheDir(Context context, String uniqueName){
             String catchPath = null;
-            if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || ! Environment.isExternalStorageRemovable()){
-                catchPath = context.getExternalCacheDir().getPath();
-            }else{
-                catchPath = context.getCacheDir().getPath();
-            }
+//            if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || ! Environment.isExternalStorageRemovable()){
+//                catchPath = context.getExternalCacheDir().getPath();
+//            }else{
+//                catchPath = context.getCacheDir().getPath();
+//            }
+            catchPath = "D:\\workproject\\myself\\MyApplication2\\app\\src\\main\\java\\com\\example\\wangqiubo\\myapplication\\CustomBitmapFactory";
             return new File(catchPath + File.separator + uniqueName);
         }
 
@@ -107,12 +109,35 @@ public class PictureSampleUtil {
             return  1;
         }
 
+        public static void cacheBitmap(Context context, String url){
+
+            DiskLruCache diskLruCache = createDiskLruCache(context);
+            String hasKey = getMd5Key(url);
+            try {
+                DiskLruCache.Editor editor = diskLruCache.edit(hasKey);
+                if (null != editor){
+                    OutputStream outputStream = editor.newOutputStream(0);
+                    byte[] bitMapDatas = downLoadPicture(url);
+                    if (null != bitMapDatas && bitMapDatas.length > 0) {
+                        outputStream.write(bitMapDatas);
+                        outputStream.close(); //切记输入输出流关闭
+                        editor.commit();
+                    }else {
+                        editor.abort();
+                    }
+                    diskLruCache.flush();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         public static DiskLruCache createDiskLruCache(Context context){
-            File catchDir = getDiskLruCacheDir(context, "bitMap");
+            File catchDir = getDiskLruCacheDir(context, "bitMaps");
             if (!catchDir.exists())
                 catchDir.mkdir();
             try {
-                diskLruCache = DiskLruCache.open(catchDir, getAppVersion(context), 1, 10 *1024 * 1024);
+                diskLruCache = DiskLruCache.open(catchDir, 1, 1, 10 *1024 * 1024);//getAppVersion(context)
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -123,7 +148,7 @@ public class PictureSampleUtil {
 
     }
 
-    public static void downLoadPicture(String urlPath){
+    public static byte[] downLoadPicture(String urlPath){
         try {
             URL url = new URL(urlPath);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -133,18 +158,19 @@ public class PictureSampleUtil {
             con.connect();;
             InputStream stream = con.getInputStream();
             byte[] datas = getByteByStream(stream);
-            String pic = stream.toString();
-            int i = 0;
+            return datas;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public static void main(String[] args){
         String urlPath = "http://img.my.csdn.net/uploads/201309/01/1378037235_7476.jpg";
-        downLoadPicture(urlPath);
+//        downLoadPicture(urlPath);
+        DiskCacheUtil.cacheBitmap(null, urlPath);
     }
 
     public static int DATA_SIZE = 1024  * 8;
@@ -163,6 +189,7 @@ public class PictureSampleUtil {
             e.printStackTrace();
         }finally {
             try {
+                inputStream.close();
                 byteArrayInputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();

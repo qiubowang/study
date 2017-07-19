@@ -81,26 +81,22 @@ public class AidlPoolActivity extends Activity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.update){
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Book book = new Book("乔布斯", "名人传", "1");
-                    try {
-                        booksAidlInterface.addBook(book);
-                        book = new Book("雷军", "名人传", "2");
-                        booksAidlInterface.addBook(book);
-                        book = new Book("柳传志", "名人传", "3");
-                        booksAidlInterface.addBook(book);
-                        List<Book> books = booksAidlInterface.getBookList();
-                        customBaseAdapter.setBookDatas(books);
-                        Message msg = mHandler.obtainMessage();
-                        msg.what = ADD_BOOK_CODE;
-                        msg.sendToTarget();
+            new Thread(() -> {
+                Book book = new Book("乔布斯", "名人传", "1");
+                try {
+                    booksAidlInterface.addBook(book);
+                    book = new Book("雷军", "名人传", "2");
+                    booksAidlInterface.addBook(book);
+                    book = new Book("柳传志", "名人传", "3");
+                    booksAidlInterface.addBook(book);
+                    List<Book> books = booksAidlInterface.getBookList();
+                    customBaseAdapter.setBookDatas(books);
+                    Message msg = mHandler.obtainMessage();
+                    msg.what = ADD_BOOK_CODE;
+                    msg.sendToTarget();
 
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-
+                } catch (RemoteException e) {
+                    e.printStackTrace();
                 }
             }).start();
         }else if (v.getId() == R.id.query){

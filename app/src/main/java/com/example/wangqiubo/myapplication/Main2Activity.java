@@ -31,13 +31,13 @@ public class Main2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAdapter = new CustomBaseAdapter(this);
-        mListView = (ListView) this.findViewById(R.id.my_list_view);
-        mListView.setAdapter(mAdapter);
-        Intent intent = new Intent();
-        ComponentName componentName = new ComponentName("com.example.myservice", "com.example.myservice.MessengerService");
-        intent.setComponent(componentName);
-        this.bindService(intent, mySer, Context.BIND_AUTO_CREATE);
+//        mAdapter = new CustomBaseAdapter(this);
+//        mListView = (ListView) this.findViewById(R.id.my_list_view);
+//        mListView.setAdapter(mAdapter);
+//        Intent intent = new Intent();
+//        ComponentName componentName = new ComponentName("com.example.myservice", "com.example.myservice.MessengerService");
+//        intent.setComponent(componentName);
+//        this.bindService(intent, mySer, Context.BIND_AUTO_CREATE);
     }
 
     private ServiceConnection mySer = new ServiceConnection() {
